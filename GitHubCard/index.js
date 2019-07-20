@@ -6,6 +6,11 @@
 //Step1
 axios.get("https://api.github.com/users/webbmaxwell")
   .then( response => {
+    //Step4
+    response.data.forEach( item => {
+      let user = cardMaker(item);
+      bigDiv.appendChild(user)
+    })
     console.log(response)
   })
   .catch( err => {
@@ -22,6 +27,9 @@ axios.get("https://api.github.com/users/webbmaxwell")
 /* Step 4: Pass the data received from Github into your function,
            create a new component and add it to the DOM as a child of .cards
 */
+
+const bigDiv = document.querySelector('.cards');
+// bigDiv.appendChild(cardMaker(followersArray));
 
 /* Step 5: Now that you have your own card getting added to the DOM, either
           follow this link in your browser https://api.github.com/users/<Your github name>/followers
@@ -70,25 +78,35 @@ function cardMaker(obj) {
   const nameName = document.createElement('h3');
   nameName.classList.add('name');
   nameName.innerHTML = `${obj.nameName}`;
-  cardInfo.appendChild(nameName)
+  cardInfo.appendChild(nameName);
 
   const userName = document.createElement('p');
   userName.classList.add('username');
   userName.innerHTML = `${obj.data.name}`;
+  cardInfo.appendChild(userName);
 
   const location = document.createElement('p');
   location.innerHTML = `Location: ${obj.data.location}`;
+  cardInfo.appendChild(location);
 
   const profile = document.createElement('p');
   profile.setAttribute('href', `${obj.data.url}`)
   profile.innerHTML = `Profile: ${obj.data.url}`;
+  cardInfo.appendChild(profile);
 
   const followers = document.createElement('p');
-  followers.innerHTML = `Followers: ${obj.data.followers}`
+  followers.innerHTML = `Followers: ${obj.data.followers}`;
+  cardInfo.appendChild(followers);
 
   const following = document.createElement('p');
   following.innerHTML = `Following: ${obj.data.following}`;
+  cardInfo.appendChild(following);
 
+  const bio = document.createElement('p');
+  bio.innerHTML = `Bio: ${obj.data.bio}`;
+  cardInfo.appendChild(bio);
+
+  return
 
 }
 
