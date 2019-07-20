@@ -10,8 +10,18 @@
 //Step1
 axios.get("https://api.github.com/users/webbmaxwell")
   .then( response => {
-    let newCard = cardMaker(response);
-    return newCard;
+    let userData = response.data;
+    console.log(userData);
+    let cardContainer = document.querySelector('.cards');
+    cardContainer.appendChild(cardMaker(userData));
+
+    followersArray.forEach(follower => {
+      axios.get(`https://api.github.com/users/${follower}`)
+      .then(response => {
+        let newData = response.data;
+        cardContainer.appendChild(cardMaker(newData));
+      })
+    })
   })
   .catch( err => {
     console.log(err)
@@ -72,7 +82,7 @@ function cardMaker(obj) {
   cardDiv.classList.add('card');
 
   const userImg = document.createElement('img');
-  userImg.setAttribute('src', `${obj.data.avatar_url}`);
+  userImg.setAttribute('src', `${obj.avatar_url}`);
   cardDiv.appendChild(userImg);
 
   const cardInfo = document.createElement('div');
@@ -81,33 +91,33 @@ function cardMaker(obj) {
 
   const nameName = document.createElement('h3');
   nameName.classList.add('name');
-  nameName.innerHTML = `${obj.data.nameName}`;
+  nameName.innerHTML = `${obj.name}`;
   cardInfo.appendChild(nameName);
 
   const userName = document.createElement('p');
   userName.classList.add('username');
-  userName.innerHTML = `${obj.data.name}`;
+  userName.innerHTML = `${obj.name}`;
   cardInfo.appendChild(userName);
 
   const location = document.createElement('p');
-  location.innerHTML = `Location: ${obj.data.location}`;
+  location.innerHTML = `Location: ${obj.location}`;
   cardInfo.appendChild(location);
 
   const profile = document.createElement('p');
-  profile.setAttribute('href', `${obj.data.url}`)
-  profile.innerHTML = `Profile: ${obj.data.url}`;
+  profile.setAttribute('href', `${obj.url}`)
+  profile.innerHTML = `Profile: ${obj.url}`;
   cardInfo.appendChild(profile);
 
   const followers = document.createElement('p');
-  followers.innerHTML = `Followers: ${obj.data.followers}`;
+  followers.innerHTML = `Followers: ${obj.followers}`;
   cardInfo.appendChild(followers);
 
   const following = document.createElement('p');
-  following.innerHTML = `Following: ${obj.data.following}`;
+  following.innerHTML = `Following: ${obj.following}`;
   cardInfo.appendChild(following);
 
   const bio = document.createElement('p');
-  bio.innerHTML = `Bio: ${obj.data.bio}`;
+  bio.innerHTML = `Bio: ${obj.bio}`;
   cardInfo.appendChild(bio);
 
   return cardDiv
